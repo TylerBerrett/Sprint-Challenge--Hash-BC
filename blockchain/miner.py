@@ -20,13 +20,11 @@ def proof_of_work(last_proof):
     - Use the same method to generate SHA-256 hashes as the examples in class
     """
 
-    start = timer()
+    #start = timer()
 
     print("Searching for next proof")
     proof = random.random()
     count = 0
-    print(last_proof)
-    print(proof)
     #  TODO: Your code here
     # last 6 of last is first six of new
 
@@ -39,7 +37,6 @@ def proof_of_work(last_proof):
         if count > 100000:
             return False
 
-    print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
 
 
