@@ -23,7 +23,10 @@ def proof_of_work(last_proof):
     start = timer()
 
     print("Searching for next proof")
-    proof = last_proof
+    proof = random.random()
+    count = 0
+    print(last_proof)
+    print(proof)
     #  TODO: Your code here
     # last 6 of last is first six of new
 
@@ -31,9 +34,10 @@ def proof_of_work(last_proof):
     new_hash = hashlib.sha256(str(proof).encode()).hexdigest()
     while valid_proof(last_hash, new_hash) is False:
         proof += 1
+        count += 1
         new_hash = hashlib.sha256(str(proof).encode()).hexdigest()
-        if timer() - start < 3:
-            return proof
+        if count > 100000:
+            return False
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
@@ -78,6 +82,8 @@ if __name__ == '__main__':
         r = requests.get(url=node + "/last_proof")
         data = r.json()
         new_proof = proof_of_work(data.get('proof'))
+        if not new_proof:
+            continue
 
         post_data = {"proof": new_proof,
                      "id": id}
