@@ -23,8 +23,17 @@ def proof_of_work(last_proof):
     start = timer()
 
     print("Searching for next proof")
-    proof = 0
+    proof = last_proof
     #  TODO: Your code here
+    # last 6 of last is first six of new
+
+    last_hash = hashlib.sha256(str(last_proof).encode()).hexdigest()
+    new_hash = hashlib.sha256(str(proof).encode()).hexdigest()
+    while valid_proof(last_hash, new_hash) is False:
+        proof += 1
+        new_hash = hashlib.sha256(str(proof).encode()).hexdigest()
+        if timer() - start < 3:
+            return proof
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
@@ -40,11 +49,13 @@ def valid_proof(last_hash, proof):
     """
 
     # TODO: Your code here!
-    pass
+    # print(valid_proof("asldjflkajsdl123456", "123456asdfasdf"))
+    return last_hash[-6:] == proof[:6]
 
 
 if __name__ == '__main__':
     # What node are we interacting with?
+
     if len(sys.argv) > 1:
         node = sys.argv[1]
     else:
